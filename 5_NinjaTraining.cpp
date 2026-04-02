@@ -22,7 +22,7 @@ int ninja(vector<vector<int>> &nums){
 
 int t_ninja(vector<vector<int>> &nums){
     vector<vector<int>> dp(nums.size()+1,vector<int>(3));
-    for(int i=0;i<4;i++){
+    for(int i=0;i<3;i++){
         dp[nums.size()][i]=0;
     }
     for(int i=nums.size()-1;i>0;i--){
