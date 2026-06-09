@@ -71,3 +71,18 @@ int main(){
     cout<<s1_knapsack(w,p,cap)<<endl;
     cout<<s_knapsack(w,p,cap)<<endl;
 }
+
+// Unbounded Knapsack
+int u_f(int idx,int sum,vector<int> &weight,vector<int> &profit,vector<vector<int>> &dp){
+    if(sum==0) return 0;
+    if(idx==0) return weight[idx]<=sum?(sum/weight[idx])*profit[idx]:0;
+    if(dp[idx][sum]!=-1) return dp[idx][sum];
+    int notTake=f(idx-1,sum,weight,profit,dp);
+    int Take=0;
+    if(sum>=weight[idx]) Take=f(idx,sum-weight[idx],weight,profit,dp)+profit[idx];
+    return dp[idx][sum]=max(Take,notTake);
+}
+int um_knapsack(vector<int> &weight,vector<int> &profit,int &capacity){
+    vector<vector<int>> dp(weight.size(),vector<int>(capacity+1,-1));
+    return f(weight.size()-1,capacity,weight,profit,dp);
+}
