@@ -3,7 +3,7 @@ using namespace std;
 int f(int i,int j,string &a,string &b,vector<vector<int>> &dp){
     if(i<0 || j<0) return 0;
     if(dp[i][j]!=-1) return dp[i][j];
-    if(a[i]==b[j]) return 1+f(i-1,j-1,a,b,dp);
+    if(a[i]==b[j]) return dp[i][j]=1+f(i-1,j-1,a,b,dp);
     return dp[i][j]=max(f(i-1,j,a,b,dp),f(i,j-1,a,b,dp));
 }
 int lcs(string &a,string &b){
@@ -41,6 +41,37 @@ int t_lcs(string &a,string &b){
     return dp[n][m];
 }
 
+// Printing LCS
+void p_lcs(string &a,string &b){
+    int n=a.size();
+    int m=b.size();
+    vector<vector<int>> dp(n+1,vector<int>(m+1,0));
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            if(a[i-1]==b[j-1]) dp[i][j]=1+dp[i-1][j-1];
+            else dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+        }
+    }
+    int len=dp[n][m];
+    string ans="";
+    for(int i=0;i<len;i++) ans+="$";
+
+    int index=len-1;
+    int i=n;
+    int j=m;
+    while(i>0 && j>0){
+        if(a[i-1]==b[j-1]){
+            ans[index]=a[i-1];
+            index--;
+            i--;
+            j--;
+        }
+        else if(dp[i-1][j]>dp[i][j-1]) i--;
+        else j--;
+    }
+    cout<<ans;
+}
+
 int s_lcs(string &a,string &b){
     int n=a.size();
     int m=b.size();
@@ -62,4 +93,6 @@ int main(){
     cout<<a_lcs(a,b)<<endl;
     cout<<t_lcs(a,b)<<endl;
     cout<<s_lcs(a,b)<<endl;
+    p_lcs(a,b);
+    cout<<endl;
 }
